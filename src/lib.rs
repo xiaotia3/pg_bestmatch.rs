@@ -17,14 +17,14 @@ compiler_error!("PostgreSQL version must be selected.");
 #[pgrx::pg_guard]
 unsafe extern "C" fn _PG_init() {}
 
-static BERT_BASE_UNCASED_BYTES: &[u8] = include_bytes!("../tokenizer/bert_base_uncased.json");
+static BERT_BASE_CHINESE_BYTES: &[u8] = include_bytes!("../tokenizer/bert-base-chinese.json");
 lazy_static::lazy_static! {
-    static ref BERT_BASE_UNCASED: tokenizers::Tokenizer = tokenizers::Tokenizer::from_bytes(BERT_BASE_UNCASED_BYTES).unwrap();
+    static ref BERT_BASE_CHINESE: tokenizers::Tokenizer = tokenizers::Tokenizer::from_bytes(BERT_BASE_CHINESE_BYTES).unwrap();
 }
 
 #[pgrx::pg_extern(immutable, strict, parallel_safe)]
 pub fn tokenize(t: &str) -> Vec<String> {
-    BERT_BASE_UNCASED
+    BERT_BASE_CHINESE
         .encode(t, false)
         .expect("failed to tokenize")
         .get_tokens()
